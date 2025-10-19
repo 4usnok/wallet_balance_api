@@ -2,7 +2,7 @@
 name = "test-task"
 version = "0.1.0"
 description = ""
-authors = [{ name = "Nikolay Korkushko, email = <kakashonochka12@gmail.com>" }]
+authors = ["Nikolay Korkushko <kakashonochka12@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -12,6 +12,7 @@ python-dotenv = "^1.1.1"
 psycopg2-binary = "^2.9.11"
 djangorestframework-simplejwt = "^5.5.1"
 pyjwt = {extras = ["crypto"], version = "^2.10.1"}
+drf-yasg = "^1.21.11"
 
 
 [build-system]
