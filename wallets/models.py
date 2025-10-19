@@ -1,28 +1,30 @@
+import uuid
+
 from django.contrib.auth.models import User
 from django.db import models
 
 
-class OperationType(models.Model):
-    """Модель для типов операций"""
 
-    name_oper = models.CharField(
-        max_length=25, help_text="Введите название типа операции"
-    )
+class OperationType(models.TextChoices):
+    """Модель для типа транзакции"""
 
-    def __str__(self):
-        return self.name_oper
+    DEPOSIT = 'DEPOSIT', 'Deposit'
+    WITHDRAW = 'WITHDRAW', 'Withdraw'
 
 
 class Wallet(models.Model):
     """Модель для кошелька"""
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, help_text="Владелец")
-    oper_type = models.ForeignKey(
-        OperationType,
-        on_delete=models.CASCADE,
-        help_text="Тип операции",
+    balance = models.DecimalField(
+        max_digits=15,
+        decimal_places=2,
+        default=0.00,
+        help_text="Текущий баланс"
     )
-    amount = models.IntegerField(help_text="Сумма баланса кошелька")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.oper_type)
+        return f"Wallet {self.id} - Balance: {self.balance}"

@@ -1,19 +1,12 @@
 from rest_framework import serializers
-from wallets.models import Wallet, OperationType
+from .models import Wallet, OperationType
 
 
-class OperTypeSerializer(serializers.ModelSerializer):
+class OperationSerializer(serializers.Serializer):
+    operation_type = serializers.ChoiceField(choices=OperationType)
+    amount = serializers.DecimalField(max_digits=15, decimal_places=2, min_value=0.01)
 
-    class Meta:
-        model = OperationType
-        fields = ["id", "name_oper"]
-
-
-class WalletsSerializer(serializers.ModelSerializer):
-    operation_type = serializers.SlugRelatedField(
-        slug_field="name_oper", source="oper_type", queryset=OperationType.objects.all()
-    )
-
+class WalletSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wallet
-        fields = ["operation_type", "amount"]
+        fields = ['id', 'balance']
