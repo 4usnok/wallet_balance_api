@@ -10,9 +10,7 @@ class WalletsApiTestCase(APITestCase):
     def setUp(self):
         """Подготовка данных перед каждым тестом"""
         self.user = User.objects.create_user(  # создание пользователя
-            username="testuser",
-            password="testpass123",
-            email="test@example.com"
+            username="testuser", password="testpass123", email="test@example.com"
         )
         self.client.force_authenticate(user=self.user)  # авторизация
 
@@ -38,13 +36,8 @@ class WalletsApiTestCase(APITestCase):
 
     def test_update_view_wallets(self):
         """Тестирование редактирования кошелька"""
-        data_from_update = {
-            "oper_type": "test_type",
-            "amount": 100
-        }
-        urls_create = reverse(
-            "wallets:wallets-update", kwargs={"pk": self.wallets.pk}
-        )
+        data_from_update = {"oper_type": "test_type", "amount": 100}
+        urls_create = reverse("wallets:wallets-update", kwargs={"pk": self.wallets.pk})
 
         response = self.client.patch(urls_create, data=data_from_update, format="json")
 

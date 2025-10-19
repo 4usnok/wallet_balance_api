@@ -1,6 +1,13 @@
 from django.urls import path
 
-from .views import WalletsBalanceApiUpdate, WalletsDetailApiView, CreateType, TypeView, WalletView, CreateWallet
+from .views import (
+    WalletsBalanceApiUpdate,
+    WalletsDetailApiView,
+    CreateType,
+    TypeView,
+    WalletView,
+    CreateWallet,
+)
 
 app_name = "wallets"
 

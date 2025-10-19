@@ -15,6 +15,7 @@ class WalletOwnerUpdate(permissions.BasePermission):
 
 class WalletsDetailApiView(generics.RetrieveAPIView):
     """Подробное описание"""
+
     serializer_class = WalletsSerializer
     permission_classes = [IsAuthenticated]
 
@@ -27,18 +28,22 @@ class WalletsDetailApiView(generics.RetrieveAPIView):
 
 class WalletsBalanceApiUpdate(generics.UpdateAPIView):
     """Редактирование описания"""
+
     queryset = Wallet.objects.all()
     serializer_class = WalletsSerializer
     permission_classes = [IsAuthenticated, WalletOwnerUpdate]
 
+
 class WalletView(generics.ListAPIView):
     """Просмотр списка кошельков"""
+
     queryset = Wallet.objects.all()
     serializer_class = WalletsSerializer
 
 
 class CreateWallet(generics.CreateAPIView):
     """Создание кошелька"""
+
     queryset = Wallet.objects.all()
     serializer_class = WalletsSerializer
     permission_classes = [IsAuthenticated]
@@ -46,12 +51,16 @@ class CreateWallet(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+
 class CreateType(generics.CreateAPIView):
     """Создание типа операции"""
+
     queryset = OperationType.objects.all()
     serializer_class = OperTypeSerializer
 
+
 class TypeView(generics.ListAPIView):
     """Просмотр списка типов операций"""
+
     queryset = OperationType.objects.all()
     serializer_class = OperTypeSerializer
