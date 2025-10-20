@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 RUN pip install poetry
 
 # Назначение рабочей директории
-WORKDIR /employee-task
+WORKDIR /test_task
 
 # Копирование файлов зависимостей
 COPY pyproject.toml poetry.lock ./
@@ -19,7 +19,7 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry config virtualenvs.create false
 
 # Установка зависимостей
-RUN poetry install --without dev --no-interaction --no-ansi --no-root
+RUN poetry install --no-interaction --no-ansi --no-root
 
 # Копирование всего проекта
 COPY . .
