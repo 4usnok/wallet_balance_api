@@ -17,7 +17,7 @@ django/drf, REST, JWT, postgresql, swagger/redoc, docker-compose, unit testing
 ## Инструкция по установке
 1. Клонируйте репозиторий:
 ```
-git clone https://github.com/4usnok/employee_tasks.git
+git clone https://github.com/4usnok/wallet_balance_api.git
 ```
 2. Установите зависимости:
 ```
