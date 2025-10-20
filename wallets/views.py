@@ -18,7 +18,7 @@ class WalletsDetailApiView(generics.RetrieveAPIView):
 
     serializer_class = WalletSerializer
     permission_classes = [IsAuthenticated, WalletOwner]
-    lookup_field = 'id'
+    lookup_field = "id"
 
     def get_queryset(self):
         # Пользователь видит только свои кошельки, админ - все
@@ -26,12 +26,13 @@ class WalletsDetailApiView(generics.RetrieveAPIView):
             return Wallet.objects.all()
         return Wallet.objects.filter(owner=self.request.user)
 
+
 class WalletOperationView(generics.RetrieveAPIView):
     """Операции с балансом"""
 
     serializer_class = WalletSerializer
     permission_classes = [permissions.IsAuthenticated, WalletOwner]
-    lookup_field = 'id'
+    lookup_field = "id"
 
     def get_queryset(self):
         if self.request.user.is_staff:
@@ -46,18 +47,15 @@ class WalletOperationView(generics.RetrieveAPIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=400)
 
-        operation_type = serializer.validated_data['operation_type']
-        amount = serializer.validated_data['amount']
+        operation_type = serializer.validated_data["operation_type"]
+        amount = serializer.validated_data["amount"]
 
-        if operation_type == 'DEPOSIT':
+        if operation_type == "DEPOSIT":
             wallet.balance += amount
 
-        elif operation_type == 'WITHDRAW':
+        elif operation_type == "WITHDRAW":
             if wallet.balance < amount:
-                return Response(
-                    {'error': 'Insufficient funds'},
-                    status=400
-                )
+                return Response({"error": "Insufficient funds"}, status=400)
             wallet.balance -= amount
 
         wallet.save()

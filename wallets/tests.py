@@ -3,7 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from wallets.models import OperationType, Wallet
+from wallets.models import Wallet
 
 
 class WalletsApiTestCase(APITestCase):
@@ -14,31 +14,32 @@ class WalletsApiTestCase(APITestCase):
         )
         self.client.force_authenticate(user=self.user)  # авторизация
 
-        self.operation_type = (  # создание данных типа операции
-            OperationType.objects.create(
-                name_oper="test_name",
-            )
-        )
         self.wallets = Wallet.objects.create(  # создание данных кошелька
-            owner=self.user,
-            oper_type=self.operation_type,
-            amount=10,
+            balance=1500.00, owner=self.user
         )
 
-    def test_list_view_wallets(self):
-        """Тестирование просмотра баланса"""
+    def test_wallets_detail_api_view(self):
+        """Тестирование просмотра баланса кошелька"""
         urls_from_detail = reverse(
-            "wallets:wallets_balance", kwargs={"pk": self.wallets.pk}
+            "wallets:wallets_balance", kwargs={"id": self.wallets.id}
         )
 
         response = self.client.get(urls_from_detail, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_update_view_wallets(self):
-        """Тестирование редактирования кошелька"""
-        data_from_update = {"oper_type": "test_type", "amount": 100}
-        urls_create = reverse("wallets:wallets-update", kwargs={"pk": self.wallets.pk})
-
-        response = self.client.patch(urls_create, data=data_from_update, format="json")
+    def test_deposit_operation_success(self):
+        """Пополнение счета"""
+        url = f"/api/v1/wallets/{self.wallets.id}/operation/"
+        data = {"operation_type": "DEPOSIT", "amount": "500.00"}
+        response = self.client.post(url, data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["balance"], "2000.00")
+
+    def test_deposit_operation_negative_amount(self):
+        """Снятие со счёта"""
+        url = f"/api/v1/wallets/{self.wallets.id}/operation/"
+        data = {"operation_type": "WITHDRAW", "amount": "500.00"}
+        response = self.client.post(url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["balance"], "1000.00")
