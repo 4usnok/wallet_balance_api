@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from wallets.models import Wallet
-from wallets.serializers import WalletSerializer, OperationSerializer
+from wallets.serializers import OperationSerializer, WalletSerializer
 
 
 class WalletOwner(permissions.BasePermission):

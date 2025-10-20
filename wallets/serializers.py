@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Wallet, OperationType
+
+from .models import OperationType, Wallet
 
 
 class OperationSerializer(serializers.Serializer):
