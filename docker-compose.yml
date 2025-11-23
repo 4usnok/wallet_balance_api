@@ -3,12 +3,12 @@ version: '3.9'
 services:
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000  # ← запуск на 8000
     volumes:
       - .:/code
       - static_volume:/code/static
     ports:
-      - "8444:8443"
+      - "8000:8000"  # ← поменяй на 8000:8000
     depends_on:
       - db
     env_file:
@@ -29,12 +29,14 @@ services:
     image: postgres:16.0
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    env_file:
-      - ./.env
+    environment:  # ← используй environment вместо env_file
+      POSTGRES_USER: ${USER_BD}
+      POSTGRES_PASSWORD: ${PASSWORD_BD}
+      POSTGRES_DB: ${NAME_BD}
     expose:
       - "5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      test: ["CMD-SHELL", "pg_isready -U ${USER_BD}"]  # ← поменяй на USER_BD
       interval: 30s
       timeout: 10s
       retries: 5
@@ -42,4 +44,3 @@ services:
 volumes:
   postgres_data:
   static_volume:
-  redis_volume:
